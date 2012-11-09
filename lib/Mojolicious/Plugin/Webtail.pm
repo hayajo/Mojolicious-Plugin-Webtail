@@ -118,7 +118,10 @@ sub _prepare_stream {
     });
     $stream->on( close => sub {
         $app->log->debug('close tail stream');
-        waitpid($pid, 0) if ($pid);
+        if ($pid) {
+            kill 'TERM', $pid if ( kill 0, $pid );
+            waitpid( $pid, 0 );
+        };
         Mojo::IOLoop->remove($stream_id);
         $self->_tail(undef);
     });

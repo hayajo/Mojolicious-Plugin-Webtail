@@ -6,7 +6,7 @@ all_from 'lib/Mojolicious/Plugin/Webtail.pm';
 readme_pod_from 'lib/Mojolicious/Plugin/Webtail.pm';
 
 # Windows unsupported
-die "$^O unsupported" if ( $^O eq 'MSWin32' || $^O eq 'cygwin' );
+die "$^O unsupported" if ( $^O eq 'MSWin32' || $^O eq 'cygwin' || $^O eq 'msys' );
 
 requires 'Mojolicious';
 

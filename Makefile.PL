@@ -5,8 +5,8 @@ name 'Mojolicious-Plugin-Webtail';
 all_from 'lib/Mojolicious/Plugin/Webtail.pm';
 readme_pod_from 'lib/Mojolicious/Plugin/Webtail.pm';
 
-# Windows(Win32) unsupported
-die "$^O unsupported" if ( $^O eq 'MSWin32');
+# Windows unsupported
+die "$^O unsupported" if ( $^O eq 'MSWin32' || $^O eq 'cygwin' );
 
 requires 'Mojolicious';
 

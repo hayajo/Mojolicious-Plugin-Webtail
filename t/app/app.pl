@@ -1,14 +1,8 @@
 use Mojolicious::Lite;
+use Getopt::Long qw{ :config posix_default no_ignore_case gnu_compat };
 
-use Getopt::Long;
-my ($file, $webtailrc);
-# my $file;
-GetOptions(
-    'file=s'      => \$file,
-    'webtailrc=s' => \$webtailrc,
-);
-
-plugin 'Webtail', file => $file, webtailrc => $webtailrc;
-# plugin 'Webtail', file => $file;
+my $opts = +{};
+GetOptions( $opts, qw{ file=s webtailrc=s } ) or exit 1;
+plugin 'Webtail', file => $opts->{file}, webtailrc => $opts->{webtailrc};
 
 app->start;

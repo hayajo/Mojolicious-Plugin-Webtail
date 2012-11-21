@@ -187,15 +187,16 @@ Mojolicious::Plugin::Webtail - display tail to your browser
 =head1 SYNOPSIS
 
   use Mojolicious::Lite;
-  plugin( 'Webtail', file => "/path/to/logfile", webtailrc => '/path/to/webtail.rc' )->start;
+  plugin( 'Webtail', file => "/path/to/logfile", webtailrc => '/path/to/webtail.rc' );
+  app->start;
 
   or
 
-  > perl -Mojo -E 'a->plugin("Webtail", file => "/path/to/logfile", webtailrc => "/path/to/webtail.rc")->start' daemon
+  > perl -Mojo -e 'a->plugin("Webtail", file => "/path/to/logfile", webtailrc => "/path/to/webtail.rc")->start' daemon
 
   or
 
-  > tail -f /path/to/logfile | perl -Mojo -E 'a->plugin("Webtail", webtailrc => "/path/to/webtail.rc")->start' daemon
+  > tail -f /path/to/logfile | perl -Mojo -e 'a->plugin("Webtail", webtailrc => "/path/to/webtail.rc")->start' daemon
 
   and access "http://host:port/webtail" in your web browser.
 

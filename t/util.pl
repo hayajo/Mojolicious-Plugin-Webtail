@@ -36,7 +36,7 @@ sub start_server {
     else {
         local $SIG{KILL} = $SIG{INT} = $SIG{TERM} = 'DEFAULT';
         setpgrp or die "$!";
-        my @args = ( @{ $args->{options} || [] }, '--', 'daemon', '-l', "http://127.0.0.1:$port" );
+        my @args = ( @{ $args->{options} || [] }, '-l', "http://127.0.0.1:$port" );
         # start server daemon
         open my $server, '|-', $^X, $app, @args;
         $server->autoflush;

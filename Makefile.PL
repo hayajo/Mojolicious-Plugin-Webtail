@@ -10,6 +10,8 @@ die "$^O unsupported" if ( $^O eq 'MSWin32' || $^O eq 'cygwin' || $^O eq 'msys' 
 
 requires 'Mojolicious';
 
+install_script 'bin/mwtail';
+
 tests 't/*.t';
 
 test_requires 'Test::More';

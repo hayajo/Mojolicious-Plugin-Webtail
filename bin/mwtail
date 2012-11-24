@@ -1,0 +1,85 @@
+#!/usr/bin/env perl
+use Mojolicious::Lite;
+use Getopt::Long qw{ :config posix_default no_ignore_case gnu_compat pass_through };
+use File::Spec;
+
+my $opts = +{};
+GetOptions( $opts, qw{ file=s webtailrc=s h|help } ) or help();
+help() if ( $opts->{h} );
+
+sub help { exec "perldoc $0" }
+
+if (  !$opts->{webtailrc}
+    && $ENV{HOME}
+    && -e ( my $webtailrc = File::Spec->catfile( $ENV{HOGE}, '.webtailrc' ) )
+    )
+{
+    $opts->{webtailrc} = $webtailrc;
+}
+
+plugin 'Webtail', file => $opts->{file}, webtailrc => $opts->{webtailrc};
+
+get '/' => sub { shift->redirect_to('/webtail') };
+
+app->start('daemon', @ARGV);
+
+__END__
+
+=head1 NAME
+
+mwtail - display tail to your browser
+
+=head1 SYNOPSIS
+
+  $ tail -f /path/to/logfile | mwtail
+
+=head1 DESCRIPTION
+
+mwtail displays tail to your browser
+
+=head1 OPTIONS
+
+L<mwtail> supports the following options.
+
+and supports L<Mojolicious::Command::daemon> options too.
+
+=head2 C<-h|help>
+
+show this.
+
+=head2 C<--file>
+
+displays the contents of C<file> or, by default, its C<STDIN>.
+
+  $ mwtail --file=/path/to/logfile
+
+=head2 C<--webtailrc>
+
+define your custom callback in C<webtail> file.
+
+the code in C<webtail> file is executed when a new line is inserted.
+
+  $ tail -f /path/to/logfile | mwtail --webtailrc=/path/to/webtailrc
+
+L<mwtail> will find webtailrc in the following order.
+
+=over 4
+
+=item 1. --webtailrc option
+
+=item 2. $ENV{HOME}/.webtailrc
+
+=back
+
+=head1 AUTHOR
+
+hayajo E<lt>hayajo@cpan.orgE<gt>
+
+=head1 SEE ALSO
+
+L<https://github.com/r7kamura/webtail>
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

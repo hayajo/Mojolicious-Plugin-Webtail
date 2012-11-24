@@ -11,7 +11,7 @@ use Test::More tests => 3;
 use File::Temp;
 
 my $message   = "Hello World";
-my $app       = File::Spec->catfile( $dir, 'app', 'app.pl' );
+my $app       = File::Spec->catfile( $dir, '..', 'bin', 'mwtail' );
 my $webtailrc = File::Spec->catfile( $dir, 'app', 'webtailrc' );
 
 subtest 'file' => sub {

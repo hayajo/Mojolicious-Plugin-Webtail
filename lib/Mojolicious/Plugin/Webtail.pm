@@ -206,7 +206,7 @@ Mojolicious::Plugin::Webtail is display tail to your browser by WebSocket.
 
 =head1 METHODS
 
-L<Mojolicious::Plugin::Webtail> inherits all methods from :<Mojolicious::Plugin>.
+L<Mojolicious::Plugin::Webtail> inherits all methods from L<Mojolicious::Plugin>.
 
 =head1 OPTIONS
 

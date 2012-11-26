@@ -1,8 +1,10 @@
 package Mojolicious::Plugin::Webtail;
 
-use Mojo::Base 'Mojolicious::Plugin';
+use strict;
+use warnings;
 our $VERSION = '0.02';
 
+use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::Util qw{ slurp };
 use Carp ();
 use Encode ();

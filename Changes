@@ -1,5 +1,8 @@
 Revision history for Perl extension Mojolicious::Plugin::Webtail
 
+0.03
+        - Fixed a bug #83245
+
 0.02
         - Added bin/mwtail
 

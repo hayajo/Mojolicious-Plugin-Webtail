@@ -15,7 +15,7 @@ my $app       = File::Spec->catfile( $dir, '..', 'bin', 'mwtail' );
 my $webtailrc = File::Spec->catfile( $dir, 'app', 'webtailrc' );
 
 subtest 'file' => sub {
-    my $file = File::Temp->new(UNLINK => 0);
+    my $file = File::Temp->new;
     $file->autoflush; # enable autoflush
 
     my $url = start_server( $app, options => [ '--file' => $file->filename ] );

@@ -1,5 +1,9 @@
 Revision history for Perl extension Mojolicious::Plugin::Webtail
 
+0.04
+        - Changed to use the File::Tail from the tail
+        - Improved tests
+
 0.03
         - Fixed a bug #83245
 

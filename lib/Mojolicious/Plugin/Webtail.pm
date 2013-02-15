@@ -89,6 +89,20 @@ sub DESTROY {
     $self->_tail->close if $self->_tail;
 }
 
+my $_tail = <<'CODE';
+use File::Tail;
+$| = 1;
+my $tail = File::Tail->new(
+    name               => $ARGV[0],
+    ignore_nonexistant => 1,
+    debug              => 1,
+    interval           => 1,
+    maxinterval        => 1,
+    adjustafter        => 1,
+);
+while ( defined( my $line = $tail->read ) ) { print $line }
+CODE
+
 sub _prepare_stream {
     my ( $self, $app ) = @_;
 
@@ -96,7 +110,7 @@ sub _prepare_stream {
 
     my ( $fh, $pid );
     if ( $self->file ) {
-        $pid = open( $fh, '-|', 'tail', '-F', '-n', '0', $self->file ) or Carp::croak "fork failed: $!";
+        $pid = open( $fh, '-|', 'perl', '-e', $_tail, $self->file ) or Carp::croak "fork failed: $!";
     } else {
         $fh = *STDIN;
     }

@@ -15,7 +15,7 @@ my $app       = File::Spec->catfile( $dir, '..', 'bin', 'mwtail' );
 my $webtailrc = File::Spec->catfile( $dir, 'app', 'webtailrc' );
 
 subtest 'file' => sub {
-    my $file = File::Temp->new;
+    my $file = File::Temp->new(UNLINK => 0);
     $file->autoflush; # enable autoflush
 
     my $url = start_server( $app, options => [ '--file' => $file->filename ] );
@@ -26,10 +26,12 @@ subtest 'file' => sub {
     $ua->websocket( $url => sub {
         my ($ua, $tx) = @_;
         $tx->on( message => sub { $got = $_[1]; Mojo::IOLoop->stop } );
-        print $file $message;
+        sleep 3;
+        $file->print("$message\n");
     });
     Mojo::IOLoop->start;
 
+    chomp $got;
     is $got, $message;
 
     stop_server();
@@ -49,6 +51,7 @@ subtest 'stdin' => sub {
     });
     Mojo::IOLoop->start;
 
+    chomp $got;
     is $got, $message;
 
     stop_server();

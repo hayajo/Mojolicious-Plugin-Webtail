@@ -4,7 +4,7 @@ use Getopt::Long qw{ :config posix_default no_ignore_case gnu_compat pass_throug
 use File::Spec;
 
 my $opts = +{};
-GetOptions( $opts, qw{ file=s webtailrc=s tail-opts=s } ) or help();
+GetOptions( $opts, qw{ file=s webtailrc=s tail-opts=s v|verbose } ) or help();
 help() if ( $ENV{MOJO_HELP} );
 
 sub help { exec "perldoc $0" }
@@ -16,6 +16,8 @@ if (  !$opts->{webtailrc}
 {
     $opts->{webtailrc} = $webtailrc;
 }
+
+app->log->level('info') unless ( $opts->{v} );
 
 plugin 'Webtail', file => $opts->{file}, webtailrc => $opts->{webtailrc}, tail_opts => $opts->{'tail-opts'};
 
@@ -47,7 +49,7 @@ L<mwtail> supports the following options.
 
 and supports L<Mojolicious::Command::daemon> options too.
 
-=head2 C<-h|help>
+=head2 C<-h|--help>
 
 show this.
 
@@ -80,6 +82,12 @@ L<mwtail> will find webtailrc in the following order.
 define tail command options, by default, "-f -n 0"
 
   $ mwtail --tail-opts="-F -n 0"
+
+=head2 C<-v|--verbose>
+
+turn on chatty output.
+
+  $ mwtail --verbose
 
 =head1 AUTHOR
 

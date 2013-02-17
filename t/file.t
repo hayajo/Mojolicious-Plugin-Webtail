@@ -18,7 +18,7 @@ subtest 'file' => sub {
     my $file = File::Temp->new;
     $file->autoflush; # enable autoflush
 
-    my $url = start_server( $app, options => [ '--file' => $file->filename ] );
+    my $url = start_server( $app, options => [ '--file' => $file->filename, '--verbose' ] );
     $url->scheme('ws')->path('/webtail');
 
     my $got;

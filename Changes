@@ -1,5 +1,10 @@
 Revision history for Perl extension Mojolicious::Plugin::Webtail
 
+0.05
+        - Reverted to use the tail from the File::Tail
+        - Added tail_opts option
+        - Added --verbose option to bin/mwtail
+
 0.04
         - Changed to use the File::Tail from the tail
         - Improved tests

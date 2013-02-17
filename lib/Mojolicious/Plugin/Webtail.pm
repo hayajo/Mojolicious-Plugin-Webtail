@@ -2,7 +2,7 @@ package Mojolicious::Plugin::Webtail;
 
 use strict;
 use warnings;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::Util qw{ slurp };

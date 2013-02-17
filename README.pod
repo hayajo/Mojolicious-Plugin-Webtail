@@ -40,6 +40,12 @@ define your custom callback in C<webtail> file.
 
 the code in C<webtail> file is executed when a new line is inserted.
 
+=head2 C<tail_opts>
+
+define tail options.
+
+default: '-f -n 0'
+
 =head1 AUTHOR
 
 hayajo E<lt>hayajo@cpan.orgE<gt>

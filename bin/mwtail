@@ -4,8 +4,8 @@ use Getopt::Long qw{ :config posix_default no_ignore_case gnu_compat pass_throug
 use File::Spec;
 
 my $opts = +{};
-GetOptions( $opts, qw{ file=s webtailrc=s h|help } ) or help();
-help() if ( $opts->{h} );
+GetOptions( $opts, qw{ file=s webtailrc=s tail-opts=s } ) or help();
+help() if ( $ENV{MOJO_HELP} );
 
 sub help { exec "perldoc $0" }
 
@@ -17,7 +17,7 @@ if (  !$opts->{webtailrc}
     $opts->{webtailrc} = $webtailrc;
 }
 
-plugin 'Webtail', file => $opts->{file}, webtailrc => $opts->{webtailrc};
+plugin 'Webtail', file => $opts->{file}, webtailrc => $opts->{webtailrc}, tail_opts => $opts->{'tail-opts'};
 
 get '/' => sub { shift->redirect_to('/webtail') };
 
@@ -32,6 +32,10 @@ mwtail - display tail to your browser
 =head1 SYNOPSIS
 
   $ tail -f /path/to/logfile | mwtail
+
+  or
+
+  $ mwtail --file=/var/log/something.log
 
 =head1 DESCRIPTION
 
@@ -70,6 +74,12 @@ L<mwtail> will find webtailrc in the following order.
 =item 2. $ENV{HOME}/.webtailrc
 
 =back
+
+=head2 C<--tail-opts>
+
+define tail command options, by default, "-f -n 0"
+
+  $ mwtail --tail-opts="-F -n 0"
 
 =head1 AUTHOR
 

@@ -9,6 +9,8 @@ use Mojo::Util qw{ slurp };
 use Carp ();
 use Encode ();
 
+use constant DEFAULT_TAIL_OPTIONS => '-f -n 0';
+
 has 'template' => <<'TEMPLATE';
 <html><head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -80,41 +82,34 @@ TEMPLATE
 
 has 'file';
 has 'webtailrc';
+has 'tail_opts' => sub { DEFAULT_TAIL_OPTIONS };
 
-has '_tail';
+has '_tail_stream';
 has '_clients' => sub { +{} };
 
 sub DESTROY {
     my $self = shift;
-    $self->_tail->close if $self->_tail;
+    $self->_tail_stream->close if $self->_tail_stream;
 }
-
-my $_tail = <<'CODE';
-use File::Tail;
-$| = 1;
-my $tail = File::Tail->new(
-    name               => $ARGV[0],
-    ignore_nonexistant => 1,
-    debug              => 1,
-    interval           => 1,
-    maxinterval        => 1,
-    adjustafter        => 1,
-);
-while ( defined( my $line = $tail->read ) ) { print $line }
-CODE
 
 sub _prepare_stream {
     my ( $self, $app ) = @_;
 
-    return if ( $self->_tail );
+    return if ( $self->_tail_stream );
 
     my ( $fh, $pid );
+    my $read_from = 'STDIN';
     if ( $self->file ) {
-        $pid = open( $fh, '-|', 'perl', '-e', $_tail, $self->file ) or Carp::croak "fork failed: $!";
-    } else {
+        require Text::ParseWords;
+        my @opts = Text::ParseWords::shellwords( $self->tail_opts );
+        my @cmd  = ('tail', @opts, $self->file);
+        $pid = open( $fh, '-|', @cmd ) or Carp::croak "fork failed: $!";
+        $read_from = join ' ', @cmd;
+    }
+    else {
         $fh = *STDIN;
     }
-    $app->log->debug( sprintf("tailing file: %s", $self->file || 'STDIN') );
+    $app->log->debug("reading from: $read_from");
 
     my $stream    = Mojo::IOLoop::Stream->new($fh)->timeout(0);
     my $stream_id = Mojo::IOLoop->stream($stream);
@@ -130,7 +125,7 @@ sub _prepare_stream {
     $stream->on( error => sub {
         $app->log->error( sprintf('error %s', $_[1] ) );
         Mojo::IOLoop->remove($stream_id);
-        $self->_tail(undef);
+        $self->_tail_stream(undef);
     });
     $stream->on( close => sub {
         $app->log->debug('close tail stream');
@@ -139,10 +134,10 @@ sub _prepare_stream {
             waitpid( $pid, 0 );
         };
         Mojo::IOLoop->remove($stream_id);
-        $self->_tail(undef);
+        $self->_tail_stream(undef);
     });
 
-    $self->_tail($stream);
+    $self->_tail_stream($stream);
     $app->log->debug( sprintf('connected tail stream %s', $stream_id ) );
 }
 
@@ -152,6 +147,7 @@ sub register {
 
     $plugin->file( $args->{file} || '' );
     $plugin->webtailrc( $args->{webtailrc} || '' );
+    $plugin->tail_opts( $args->{tail_opts} || DEFAULT_TAIL_OPTIONS );
 
     $app->hook(
         before_dispatch => sub {
@@ -237,6 +233,12 @@ displays the contents of C<file> or, by default, its C<STDIN>.
 define your custom callback in C<webtail> file.
 
 the code in C<webtail> file is executed when a new line is inserted.
+
+=head2 C<tail_opts>
+
+define tail options.
+
+default: '-f -n 0'
 
 =head1 AUTHOR
 

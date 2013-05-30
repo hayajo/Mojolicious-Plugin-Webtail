@@ -15,7 +15,12 @@
    "name" : "Mojolicious-Plugin-Webtail",
    "no_index" : {
       "directory" : [
-         "inc"
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples"
       ]
    },
    "prereqs" : {

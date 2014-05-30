@@ -1,7 +1,9 @@
 use Mojo::Base qw{ -strict };
 
+use Mojolicious;
 use Mojo::IOLoop;
 use Mojo::URL;
+use Mojo::IOLoop::Server;
 
 local $SIG{KILL} = $SIG{INT} = $SIG{TERM} = sub {
     stop_server();
@@ -12,10 +14,16 @@ my $_servers = {};
 
 sub get_server { $_servers->{$_[0]} || +{} }
 
+sub generate_port {
+    ( $Mojolicious::VERSION >= 5.0 )
+      ? Mojo::IOLoop::Server->generate_port
+      : Mojo::IOLoop->generate_port;
+}
+
 sub start_server {
     my $app  = shift;
     my $args = { @_ };
-    my $port = delete( $args->{port} ) || Mojo::IOLoop->generate_port;
+    my $port = delete( $args->{port} ) || generate_port();
 
     my $pid = open my $fh, '|-'; # fork
     $fh->autoflush;

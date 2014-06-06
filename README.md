@@ -24,11 +24,11 @@ Mojolicious::Plugin::Webtail is display tail to your browser by WebSocket.
 
 # METHODS
 
-[Mojolicious::Plugin::Webtail](http://search.cpan.org/perldoc?Mojolicious::Plugin::Webtail) inherits all methods from [Mojolicious::Plugin](http://search.cpan.org/perldoc?Mojolicious::Plugin).
+[Mojolicious::Plugin::Webtail](https://metacpan.org/pod/Mojolicious::Plugin::Webtail) inherits all methods from [Mojolicious::Plugin](https://metacpan.org/pod/Mojolicious::Plugin).
 
 # OPTIONS
 
-[Mojolicious::Plugin::Webtail](http://search.cpan.org/perldoc?Mojolicious::Plugin::Webtail) supports the following options.
+[Mojolicious::Plugin::Webtail](https://metacpan.org/pod/Mojolicious::Plugin::Webtail) supports the following options.
 
 ## `file`
 

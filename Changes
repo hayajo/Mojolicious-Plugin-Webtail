@@ -2,6 +2,9 @@ Revision history for Mojolicious-Plugin-Webtail
 
 {{$NEXT}}
 
+0.07 2017-04-30T04:52:29Z
+        - Changed required version to Mojolicious 7.15 or higher.
+
 0.06 2014-06-06T04:49:51Z
         - Minillaize
         - Supported Mojolicious 5.0

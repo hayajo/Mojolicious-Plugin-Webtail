@@ -2,10 +2,9 @@ package Mojolicious::Plugin::Webtail;
 
 use strict;
 use warnings;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Mojo::Base 'Mojolicious::Plugin';
-use Mojo::Util qw{ slurp };
 use Carp ();
 use Encode ();
 
@@ -181,7 +180,7 @@ sub register {
             $c->render(
                 inline    => $plugin->template,
                 ws_url    => $ws_url,
-                webtailrc => ( $plugin->webtailrc ) ? slurp( $plugin->webtailrc ) : '',
+                webtailrc => ( $plugin->webtailrc ) ? Mojo::File->new( $plugin->webtailrc )->slurp : '',
                 file      => $args->{file} || 'STDIN',
             );
         },

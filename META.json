@@ -4,7 +4,7 @@
       "hayajo <hayajo@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v1.0.0, CPAN::Meta::Converter version 2.141170",
+   "generated_by" : "Minilla/v3.0.10, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "perl_5"
    ],
@@ -28,9 +28,7 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "CPAN::Meta" : "0",
-            "CPAN::Meta::Prereqs" : "0",
-            "Module::Build" : "0.38"
+            "Module::Build" : "0.4005"
          }
       },
       "develop" : {
@@ -44,7 +42,7 @@
       },
       "runtime" : {
          "requires" : {
-            "Mojolicious" : "3.02",
+            "Mojolicious" : "7.15",
             "Text::ParseWords" : "0",
             "perl" : "5.010001"
          }
@@ -67,8 +65,9 @@
          "web" : "https://github.com/hayajo/Mojolicious-Plugin-Webtail"
       }
    },
-   "version" : "0.06",
+   "version" : "0.07",
    "x_contributors" : [
       "hayajo <hayato.imai@gmail.com>"
-   ]
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27300"
 }
